@@ -7,10 +7,22 @@ import Test.Hspec
 spec :: Spec
 spec = do
 
-  describe "acceptance" $ do
-
-    it "Play a full game" $ do
-      True `shouldBe` True
+--  describe "acceptance" $ do
+--
+--    it "Play a full game" $ do
+--      let initialGame = startGame
+--      let result = do
+--                g <- winPoint PlayerOne initialGame
+--                g' <- winPoint PlayerTwo g
+--                g'' <- (play X (1,0) g')
+--                g''' <- (play O (1,2) g'')
+--                g'''' <- (play X (0,0) g''')
+--                g''''' <- (play O (2,0) g'''')
+--                (play X (2,2) g''''')
+--      let expectedGrid = [[TakenBy X, TakenBy O, Empty],
+--                        [TakenBy X, TakenBy X, TakenBy O],
+--                        [TakenBy O, Empty, TakenBy X]]
+--      result `shouldBe` (Right $ Game { grid = expectedGrid, status= Winner X })
 
   describe "game rules" $ do
 
