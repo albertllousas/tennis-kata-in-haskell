@@ -2,27 +2,22 @@ module TennisSpec where
 
 import Tennis
 import Test.Hspec
-
+import Control.Monad.State
 
 spec :: Spec
 spec = do
 
---  describe "acceptance" $ do
---
---    it "Play a full game" $ do
---      let initialGame = startGame
---      let result = do
---                g <- winPoint PlayerOne initialGame
---                g' <- winPoint PlayerTwo g
---                g'' <- (play X (1,0) g')
---                g''' <- (play O (1,2) g'')
---                g'''' <- (play X (0,0) g''')
---                g''''' <- (play O (2,0) g'''')
---                (play X (2,2) g''''')
---      let expectedGrid = [[TakenBy X, TakenBy O, Empty],
---                        [TakenBy X, TakenBy X, TakenBy O],
---                        [TakenBy O, Empty, TakenBy X]]
---      result `shouldBe` (Right $ Game { grid = expectedGrid, status= Winner X })
+  describe "acceptance" $ do
+
+    it "Play a full game" $ do
+      let result = do
+                score PlayerOne
+                score PlayerOne
+                score PlayerTwo
+                score PlayerOne
+                score PlayerTwo
+                score PlayerOne
+      runState (result) startGame `shouldBe` (Forty, Game { scores = (Forty, Thirty), status = WonBy PlayerOne })
 
   describe "game rules" $ do
 
