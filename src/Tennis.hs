@@ -18,8 +18,9 @@ startGame =  Game { scores = (Love, Love), status = Ongoing }
 
 winPoint :: Player -> Game -> Game
 winPoint PlayerOne Game{ scores = (s1, s2) } = buildGame (nextState PlayerOne s1 s2)
-winPoint PlayerTwo Game{ scores = (s1, s2) } = buildGame (swap (nextState PlayerTwo s2 s1))
+winPoint PlayerTwo Game{ scores = (s1, s2) } = buildGame (swapScores (nextState PlayerTwo s2 s1))
 
+nextState :: Player -> Score -> Score -> (Score, Score, GameStatus)
 nextState p Love s  =  (FifthTeen, s, Ongoing)
 nextState p FifthTeen s  =  (Thirty, s, Ongoing)
 nextState p Thirty Forty  =  (Deuce, Deuce, Ongoing)
@@ -31,4 +32,5 @@ nextState p Advantage s  = (Advantage, s, (WonBy p))
 
 buildGame (s1, s2, status) = Game { scores = (s1, s2), status = status }
 
-swap (a,b,c) = (b,a,c)
+swapScores :: (Score, Score, a) -> (Score, Score, a)
+swapScores (a,b,c) = (b,a,c)
