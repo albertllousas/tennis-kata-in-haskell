@@ -17,18 +17,18 @@ score PlayerTwo = state $ \g -> case (winPoint PlayerTwo g) of game@Game { score
 startGame =  Game { scores = (Love, Love), status = Ongoing }
 
 winPoint :: Player -> Game -> Game
-winPoint PlayerOne Game{ scores = (s1, s2) } = buildGame (nextState PlayerOne s1 s2)
-winPoint PlayerTwo Game{ scores = (s1, s2) } = buildGame (swapScores (nextState PlayerTwo s2 s1))
+winPoint PlayerOne Game{ scores = (s1, s2) } = buildGame (nextStatusFor PlayerOne s1 s2)
+winPoint PlayerTwo Game{ scores = (s1, s2) } = buildGame (swapScores (nextStatusFor PlayerTwo s2 s1))
 
-nextState :: Player -> Score -> Score -> (Score, Score, GameStatus)
-nextState p Love s  =  (FifthTeen, s, Ongoing)
-nextState p FifthTeen s  =  (Thirty, s, Ongoing)
-nextState p Thirty Forty  =  (Deuce, Deuce, Ongoing)
-nextState p Thirty s  =  (Forty, s, Ongoing)
-nextState p Forty s  =  (Forty, s, (WonBy p))
-nextState p Deuce Advantage  =  (Deuce, Deuce, Ongoing)
-nextState p Deuce s  =  (Advantage, s, Ongoing)
-nextState p Advantage s  = (Advantage, s, (WonBy p))
+nextStatusFor :: Player -> Score -> Score -> (Score, Score, GameStatus)
+nextStatusFor p Love s  =  (FifthTeen, s, Ongoing)
+nextStatusFor p FifthTeen s  =  (Thirty, s, Ongoing)
+nextStatusFor p Thirty Forty  =  (Deuce, Deuce, Ongoing)
+nextStatusFor p Thirty s  =  (Forty, s, Ongoing)
+nextStatusFor p Forty s  =  (Forty, s, (WonBy p))
+nextStatusFor p Deuce Advantage  =  (Deuce, Deuce, Ongoing)
+nextStatusFor p Deuce s  =  (Advantage, s, Ongoing)
+nextStatusFor p Advantage s  = (Advantage, s, (WonBy p))
 
 buildGame (s1, s2, status) = Game { scores = (s1, s2), status = status }
 
