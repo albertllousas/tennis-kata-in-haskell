@@ -1,6 +1,6 @@
 # tennis-kata-using-state-monad
 
-Cool [Tennis kata](https://codingdojo.org/kata/Tennis/) to practice TDD.
+Cool [Tennis kata](https://codingdojo.org/kata/Tennis/) to use the State Monad and practice TDD.
 
 ## Description
 This Kata is about implementing a simple tennis game. The scoring system is rather simple:

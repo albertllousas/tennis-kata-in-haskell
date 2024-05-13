@@ -17,20 +17,20 @@ score PlayerTwo = state $ \g -> case (winPoint PlayerTwo g) of game@Game { score
 startGame =  Game { scores = (Love, Love), status = Ongoing }
 
 winPoint :: Player -> Game -> Game
-winPoint PlayerOne Game{ scores = (s1, s2) } = buildGame (pointFor PlayerOne s1 s2)
-winPoint PlayerTwo Game{ scores = (s1, s2) } = buildGame (swapScores (pointFor PlayerTwo s2 s1))
+winPoint PlayerOne Game{ scores = (scorePlayer1, scorePlayer2) } = buildGame (nextStateGivenAPointFor PlayerOne scorePlayer1 scorePlayer2)
+winPoint PlayerTwo Game{ scores = (scorePlayer1, scorePlayer2) } = buildGame (swapScores (nextStateGivenAPointFor PlayerTwo scorePlayer2 scorePlayer1))
 
-pointFor :: Player -> Score -> Score -> (Score, Score, GameStatus)
-pointFor p Love s  =  (FifthTeen, s, Ongoing)
-pointFor p FifthTeen s  =  (Thirty, s, Ongoing)
-pointFor p Thirty Forty  =  (Deuce, Deuce, Ongoing)
-pointFor p Thirty s  =  (Forty, s, Ongoing)
-pointFor p Forty s  =  (Forty, s, (WonBy p))
-pointFor p Deuce Advantage  =  (Deuce, Deuce, Ongoing)
-pointFor p Deuce s  =  (Advantage, s, Ongoing)
-pointFor p Advantage s  = (Advantage, s, (WonBy p))
+nextStateGivenAPointFor :: Player -> Score -> Score -> (Score, Score, GameStatus)
+nextStateGivenAPointFor _      Love        otherPlayerScore = (FifthTeen, otherPlayerScore, Ongoing)
+nextStateGivenAPointFor _      FifthTeen   otherPlayerScore = (Thirty, otherPlayerScore, Ongoing)
+nextStateGivenAPointFor _      Thirty      Forty            = (Deuce, Deuce, Ongoing)
+nextStateGivenAPointFor _      Thirty      otherPlayerScore = (Forty, otherPlayerScore, Ongoing)
+nextStateGivenAPointFor player Forty       otherPlayerScore = (Forty, otherPlayerScore, (WonBy player))
+nextStateGivenAPointFor _      Deuce       Advantage        = (Deuce, Deuce, Ongoing)
+nextStateGivenAPointFor _      Deuce       otherPlayerScore = (Advantage, otherPlayerScore, Ongoing)
+nextStateGivenAPointFor player Advantage   otherPlayerScore = (Advantage, otherPlayerScore, (WonBy player))
 
-buildGame (s1, s2, status) = Game { scores = (s1, s2), status = status }
+buildGame (scorePlayer1, scorePlayer2, status) = Game { scores = (scorePlayer1, scorePlayer2), status = status }
 
 swapScores :: (Score, Score, a) -> (Score, Score, a)
-swapScores (a,b,c) = (b,a,c)
+swapScores (score1, score2, c) = (score2, score1, c)
